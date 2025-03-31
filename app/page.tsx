@@ -1,6 +1,7 @@
-import { auth } from "@clerck/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { Button } from "../components/ui/button";
+import Link from "next/link";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -28,9 +29,13 @@ export default async function Home() {
               <></>
             ) : (
               <>
-                <link href="/sign-up">
+                <Link href="/sign-up">
                   <Button>New Patient</Button>
-                </link>
+                </Link>
+
+                <Link href="/sign-in">
+                  <Button>Login to account</Button>
+                </Link>
               </>
             )}
           </div>
