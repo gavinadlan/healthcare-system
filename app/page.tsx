@@ -24,17 +24,24 @@ export default async function Home() {
             repellat autem reprehenderit tempora mollitia ullam incidunt
           </p>
 
-          <div>
+          <div className="flex gap-4">
             {userId ? (
               <></>
             ) : (
               <>
                 <Link href="/sign-up">
-                  <Button>New Patient</Button>
+                  <Button className="md:text-base font-light">
+                    New Patient
+                  </Button>
                 </Link>
 
                 <Link href="/sign-in">
-                  <Button>Login to account</Button>
+                  <Button
+                    variant="outline"
+                    className="md:text-base underline hover:text-blue-600"
+                  >
+                    Login to account
+                  </Button>
                 </Link>
               </>
             )}
