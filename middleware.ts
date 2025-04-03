@@ -1,6 +1,16 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { routeAccess } from "./lib/routes";
 
-export default clerkMiddleware();
+const matchers = Object.keys(routeAccess).map((route) => ({
+  matcher: createRouteMatcher([route]),
+  allowedRoles: routeAccess[route],
+}));
+
+export default clerkMiddleware((auth, request) => {
+  const { userId } = auth();
+
+  console.log(userId);
+});
 
 export const config = {
   matcher: [
