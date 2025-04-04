@@ -1,5 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { routeAccess } from "./lib/routes";
+import { NextResponse } from "next/server";
 
 const matchers = Object.keys(routeAccess).map((route) => ({
   matcher: createRouteMatcher([route]),
@@ -7,9 +8,19 @@ const matchers = Object.keys(routeAccess).map((route) => ({
 }));
 
 export default clerkMiddleware((auth, request) => {
-  const { userId } = auth();
+  const { userId, sessionClaims } = auth();
 
-  console.log(userId);
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  console.log(role);
+
+  for (const { matcher, allowedRoles } of matchers) {
+    if (role && userId) {
+      if (matcher(request) && !allowedRoles.includes(role)) {
+        return NextResponse.redirect(new URL(`/${role}`, request.url));
+      }
+    }
+  }
 });
 
 export const config = {
